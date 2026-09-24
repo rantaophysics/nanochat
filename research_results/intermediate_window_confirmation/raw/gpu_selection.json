@@ -1,0 +1,18 @@
+{
+  "selection_time_utc": "2026-09-24T01:24:50Z",
+  "hostname": "cci-p124",
+  "physical_gpu_id": 1,
+  "gpu_uuid": "GPU-21c8ffaa-d17a-cdfe-7210-ec8462eb9baf",
+  "gpu_model": "NVIDIA H100 NVL",
+  "memory_total_mib": 95830,
+  "memory_used_mib": 4,
+  "memory_free_mib": 95317,
+  "utilization_percent": 0,
+  "active_compute_processes": [],
+  "cuda_visible_devices": "1",
+  "python_device": "cuda:0",
+  "python_device_name": "NVIDIA H100 NVL",
+  "pytorch_version": "2.10.0+cu128",
+  "cuda_version_reported_by_pytorch": "12.8",
+  "selection_reason": "Lowest utilization, no active compute process, and greatest free memory among eligible GPUs at launch."
+}

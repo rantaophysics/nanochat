@@ -1,0 +1,48 @@
+{
+  "status": "passed",
+  "smoke": false,
+  "expected_rows": 4000,
+  "completed_rows": 4000,
+  "failed_rows": 0,
+  "resume_initial_rows": 4000,
+  "new_rows_this_invocation": 0,
+  "hook_logits_max_abs_difference": 0.0,
+  "clean_reference_comparisons": 500,
+  "condition_counts": {
+    "clean": 500,
+    "generated_read_block": 500,
+    "full_intermediate_bottleneck": 500,
+    "early_5_7": 500,
+    "middle_12_14": 500,
+    "later_middle_19_21": 500,
+    "sparse_union": 500,
+    "late_negative_30_32": 500
+  },
+  "template_counts": {
+    "direct_fact": 800,
+    "person_in_list": 800,
+    "friend": 800,
+    "visitor_register": 800,
+    "dialogue": 800
+  },
+  "checks": {
+    "exact_row_count": true,
+    "condition_counts": true,
+    "template_counts": true,
+    "eight_rows_per_entity_template": true,
+    "zero_duplicate_keys": true,
+    "zero_missing_keys": true,
+    "zero_failed_conditions": true,
+    "all_entities_used": true,
+    "all_templates_used": true,
+    "policy_layers_exact": true,
+    "final_prompt_never_modified": true,
+    "generated_cached_decode_verified": true,
+    "clean_hook_logits_match_native": true,
+    "clean_generations_match_reference": true,
+    "tables_figures_regenerated_from_results": true,
+    "resume_skips_completed_without_duplication": true,
+    "result_files_readable_nonempty": true,
+    "source_provenance_and_hashes": true
+  }
+}

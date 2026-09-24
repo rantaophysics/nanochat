@@ -1,6 +1,6 @@
-# Intermediate-window confirmation experiment
+# 100-entity intermediate-window experiment
 
-This package contains the code, raw outputs, validation records, corrected confirmatory analysis, figures, and PDF report for the Qwen3-8B-Base intermediate-token entity-access experiment completed on 2026-09-24.
+This package contains the code, raw outputs, validation records, full-cohort analysis, figures, and PDF report for the Qwen3-8B-Base intermediate-token entity-access experiment completed on 2026-09-24. The analysis includes all 100 entities from this run and does not exclude entities based on any earlier experiment.
 
 ## Terminology
 
@@ -19,18 +19,20 @@ Layer intervals are zero-indexed and half-open. For example, `[5, 7)` contains l
 
 The intervention preserves native attention scores and post-softmax weights. It zeroes the entity-span value contribution for targeted queries without renormalizing the remaining attention coefficients. The final prompt query stays native. In every non-clean condition from this run, generated-token queries are also prevented from rereading the entity during cached decoding.
 
-## Confirmatory population
+## Analysis population
 
-The run contains 100 entities, five templates, eight conditions, and 4,000 successful rows. Fourteen entities overlap the 20-entity pilot, and all 14 are one-token names. The independent sample therefore contains:
+The run contains 100 entities, five templates, eight conditions, and 4,000 successful rows. All 100 entities are analyzed:
 
-- 36 unseen one-token names per template, which form the confirmatory population for the original prompt-stage experiment.
-- 50 unseen multi-token names per template, which expose a separate cached-decoding requirement and are analyzed separately.
+- 50 one-token names per template form the primary prompt-stage window analysis.
+- 50 multi-token names per template expose a separate cached-decoding requirement and are reported as a complementary stratum.
 
-## Main results on unseen one-token entities
+The token-count strata are kept separate because generated-token blocking can truncate multi-token names after a correct first token. This separation is a property of the present experiment, not an exclusion based on previous data.
 
-- `friend`: `W_early` rescued 25 of 26 full-bottleneck failures, harmed 0 cases, and reached 0.972 semantic accuracy (`p = 5.96e-08`). `W_union` rescued all 26 failures.
-- `person_in_list`: `W_late-mid` rescued 4 of 9 failures with no harm but was individually underpowered (`p = 0.125`). `W_union` rescued 8 of 9 failures (`p = 0.0078`).
-- `dialogue`: `W_union` rescued 18 of 25 failures with no harm (`p = 7.63e-06`).
+## Main results on all 50 one-token entities
+
+- `friend`: `W_early` rescued 36 of 37 full-bottleneck failures, harmed 0 cases, and reached 0.980 semantic accuracy (`p = 2.91e-11`). `W_union` rescued all 37 failures.
+- `person_in_list`: `W_late-mid` rescued 6 of 11 failures with no harm (`p = 0.0313`). `W_union` rescued 10 of 11 failures (`p = 0.0020`).
+- `dialogue`: `W_union` rescued 24 of 31 failures with no harm (`p = 1.19e-07`).
 - `direct_fact` and `visitor_register`: the full bottleneck did not reduce complete-identity accuracy, so they are insensitive semantic controls rather than rescue tests.
 - `W_control` remained near the full bottleneck and recovered essentially none of the late entity-readout gap.
 
@@ -38,7 +40,7 @@ Successful conditions also restored the final token's late entity-directed atten
 
 ## Multi-token boundary
 
-Under generated-token blocking, the first answer token was correct for all 50 unseen multi-token entities in every template, while complete-identity accuracy ranged from 0.16 to 0.62. The common failure was generating only the first name. These cases should not be pooled with the one-token confirmation because later name tokens often require entity rereading during autoregressive decoding.
+Under generated-token blocking, the first answer token was correct for all 50 multi-token entities in every template, while complete-identity accuracy ranged from 0.16 to 0.62. The common failure was generating only the first name. These cases remain part of the 100-entity experiment but should be reported separately from prompt-stage window rescue because later name tokens often require entity rereading during autoregressive decoding.
 
 ## Reproduce the experiment
 
@@ -78,9 +80,9 @@ python research_results/intermediate_window_confirmation/build_summary.py \
 
 - `source/`: immutable copies of the three experiment inputs used on Drexel.
 - `raw/results.jsonl`: all 4,000 trial rows.
-- `raw/`: configuration, validations, pilot overlap, original aggregate tables, and original run summary.
-- `derived/`: corrected tables separating unseen one-token and multi-token populations.
+- `raw/`: configuration, validations, run metadata, original aggregate tables, and original run summary.
+- `derived/`: full-cohort tables for all 50 one-token and all 50 multi-token entities.
 - `report/`: the reviewed PDF and its five source figures.
 - `build_summary.py`: reproducible analysis and PDF builder.
 
-The original aggregate summary is retained as `raw/original_summary.md` for provenance. The PDF and `derived/` tables provide the paper-facing interpretation because they separate one-token confirmation from multi-token cached decoding.
+The original aggregate summary is retained as `raw/original_summary.md` for provenance. The PDF and `derived/` tables provide the paper-facing interpretation of all 100 entities while separating prompt-stage one-token effects from multi-token cached decoding.
